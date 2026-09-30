@@ -15,9 +15,8 @@
         are CrimsonUI tabs.
       * Keybinds live on their own tab. CrimsonUI has no per-row key chip, so
         each feature gets a key picker there; one shared handler drives them.
-      * Every feature's description moved to the Guide tab. CrimsonUI has no
-        settings drawer to hang them on.
       * Configs use CrimsonUI's flag system: Settings -> Configs.
+      * Theme is CrimsonUI's own default (Crimson); switch it in Settings.
       * Right Shift hides and shows the menu (changeable in Settings).
 ]]
 
@@ -2683,7 +2682,7 @@ end
 Window = CrimsonUI.new({
     Name      = "MonoMM2",
     Title     = "Mono MM2",
-    Theme     = "Mono",
+    -- no Theme field: CrimsonUI defaults to its Crimson theme
     Size      = Vector2.new(520, 440),
     ToggleKey = Enum.KeyCode.RightShift,
 })
@@ -3541,111 +3540,6 @@ do
     end)
 end
 
---========================== GUIDE ===================================
--- Mono showed each feature's description in a side drawer on demand. CrimsonUI
--- has no drawer, so every description lives here instead.
-do
-    local GuideTab = Window:AddTab("Guide")
-GuideTab:AddSection("Combat")
-GuideTab:AddLabel("Auto Kill — As murderer, knifes everyone still alive in the round. As sheriff, snap-shots the murderer")
-GuideTab:AddLabel("As murderer, it knifes everyone still alive in the round at once, with no distance limit, so it ends the round instantly. Anyone already dead and sitting in the lobby is skipped. As sheriff or hero it snap-shots the murderer instead: it locks onto them at a fixed offset, rides along with them for a few frames so the server sees the two of you in the correct relative position, fires point blank and returns you. Riding along is what makes it land on someone running or jumping, because your position and theirs go stale together instead of separately. The server only accepts one gun shot every 3.2 seconds and silently discards anything sent sooner, so this waits that long between attempts.")
-GuideTab:AddLabel("Aimbot — Snaps your camera to the closest enemy in your FOV")
-GuideTab:AddLabel("Snaps your camera to the closest enemy inside the FOV circle. As murderer it tracks anyone, otherwise it tracks the murderer. Bind a key and it only aims while that key is held; leave it toggled on and it aims continuously. Adjust the radius with the FOV slider, and turn on Show FOV to see it.")
-GuideTab:AddLabel("Silent Aim — Your shots and throws go to the closest player in your FOV")
-GuideTab:AddLabel("Your shots and throws go to the closest player in your FOV. As murderer it redirects the knife where you threw it, and it keeps hold of whoever you picked for a moment so drifting off them during the throw's wind up does not lose the lock. As sheriff or hero, pulling the trigger locks onto whoever is in the circle and snap-shots them, since the gun is checked against your position. Set the radius with the Aimbot FOV slider.")
-GuideTab:AddLabel("Show FOV Circle — Draws the aim radius")
-GuideTab:AddLabel("Draws the aim radius. Only visible while an aim feature is on.")
-GuideTab:AddLabel("Gun Through Walls — Your shots ignore geometry")
-GuideTab:AddLabel("Your shots ignore geometry. Aim near a player rather than exactly at them - through a wall it falls back to whoever is closest inside the Aimbot FOV circle, since you cannot aim precisely at someone you cannot see. Does not shoot for you.")
-GuideTab:AddLabel("Dropped Gun ESP — Highlights the sheriff gun once it is on the ground")
-GuideTab:AddLabel("Highlights the sheriff gun once it is lying on the ground.")
-GuideTab:AddLabel("Gun ESP Distance — Adds a distance label to the dropped gun highlight")
-GuideTab:AddLabel("Adds a distance label to the dropped gun highlight.")
-GuideTab:AddLabel("Auto Grab Gun — Grabs the dropped gun the moment it appears, then returns you")
-GuideTab:AddLabel("Grabs the dropped gun the moment it appears, then returns you.")
-GuideTab:AddLabel("Grab Gun Now — One-off grab of the dropped gun")
-GuideTab:AddLabel("Knife Through Walls — Your thrown knives ignore geometry")
-GuideTab:AddLabel("Your thrown knives ignore geometry. Aim at a player or anywhere on the map. Does not throw for you.")
-GuideTab:AddLabel("Instant Knife Throw — Skips the wind up and the flight time so the knife lands at once")
-GuideTab:AddLabel("Skips the wind up and the flight time, so the knife lands the instant you press throw. Walls still block it unless Knife Through Walls is on.")
-GuideTab:AddSection("Player")
-GuideTab:AddLabel("Fly — Free movement in any direction")
-GuideTab:AddLabel("Free movement relative to your camera. On a keyboard use WASD with Space to rise and Ctrl to drop. On a touch screen use your normal movement stick, and the up and down buttons Mono adds to the side of the screen.")
-GuideTab:AddLabel("Noclip — Walk through walls")
-GuideTab:AddLabel("Walk through walls. Forced on during a fling, which needs it.")
-GuideTab:AddLabel("Infinite Jump — Jump again any time, including mid-air")
-GuideTab:AddLabel("Jump again any time, including mid-air.")
-GuideTab:AddLabel("Unlock Camera — Removes the zoom limit")
-GuideTab:AddLabel("Removes the zoom limit. Combined with Noclip the camera also passes through walls.")
-GuideTab:AddLabel("Reset Character — Kills you so you respawn")
-GuideTab:AddLabel("Walk Speed — Sets how fast you run")
-GuideTab:AddLabel("Sets how fast you run. The default is 16. Going well above that is an easy way to get kicked, so raise it gently.")
-GuideTab:AddLabel("Jump Power — Raises how high you jump")
-GuideTab:AddLabel("Raises how high you jump. The default is 50. Large values are very obvious to other players, so raise it gently.")
-GuideTab:AddSection("Visuals")
-GuideTab:AddLabel("Nametag ESP — Name, distance and round coins above each player")
-GuideTab:AddLabel("Name, distance and round coins above each player.")
-GuideTab:AddLabel("Box ESP — 2D rectangle around each player that tracks their pose")
-GuideTab:AddLabel("2D rectangle around each player that tracks their pose.")
-GuideTab:AddLabel("3D Box ESP — Draws a box around each player in world space")
-GuideTab:AddLabel("A twelve-edge box fitted to the player's actual bounding box, so it turns with them and keeps true perspective at any distance.")
-GuideTab:AddLabel("Chams — Colored through-wall outline on each player")
-GuideTab:AddLabel("Colored through-wall outline on each player, visible through geometry.")
-GuideTab:AddLabel("Role Tags — Colors every ESP by role and shows [M] [S] [I] tags")
-GuideTab:AddLabel("Colors every ESP by role and shows [M] [S] [I] tags.")
-GuideTab:AddLabel("Avatar Icons — Shows each player's headshot on their nametag")
-GuideTab:AddLabel("Fetches the player's headshot thumbnail once and caches it on the nametag card.")
-GuideTab:AddLabel("Tracers — Draws a line from your chosen origin to each player")
-GuideTab:AddLabel("A thin line from your chosen origin to each player, colored by their role.")
-GuideTab:AddLabel("ESP Distance Limit — Hides nametags and tracers past a set range")
-GuideTab:AddLabel("With this off every player is shown regardless of range.")
-GuideTab:AddLabel("Skeleton ESP — Draws bone lines over each player")
-GuideTab:AddLabel("Draws bone lines over each player.")
-GuideTab:AddLabel("Footstep Trails — Leaves a colored trail of footprints behind every player")
-GuideTab:AddLabel("Leaves a trail of footprints behind every player, colored by role: red for the murderer, blue for the sheriff or hero, green for innocents. The game's own Footsteps perk is murderer only and shows innocents in one color, so this replaces it rather than revealing it. The prints are drawn on your machine only, so nobody else sees them.")
-GuideTab:AddLabel("Coin ESP — Highlights every uncollected coin on the map")
-GuideTab:AddLabel("Highlights every uncollected coin on the map.")
-GuideTab:AddLabel("Trap ESP — Untested. Shows the murderer's invisible traps through walls")
-GuideTab:AddLabel("Untested. Murderer traps turn up rarely enough that this has never been confirmed working, so it may not behave as intended. What it is meant to do: traps are invisible by design, and this draws them through walls so you can walk around them.")
-GuideTab:AddLabel("Kill Feed — Notifies you of every elimination, in any role including innocent")
-GuideTab:AddLabel("Notifies you of every elimination, in any role including innocent.")
-GuideTab:AddLabel("Fullbright — Removes darkness so nowhere on the map is unlit")
-GuideTab:AddLabel("Removes darkness so nowhere on the map is unlit.")
-GuideTab:AddLabel("FPS Boost — Strips textures, shadows, particles and post effects")
-GuideTab:AddLabel("Flattens every part to plain untextured plastic and removes shadows, particles, decals, sun rays, bloom and atmospheric haze, which is where most of the frame cost in a heavy map goes. It leaves your brightness alone, so if the map is dark it stays dark. Turn on Fullbright as well if you want it lit flat. Everything is reversed when you turn it off or unload.")
-GuideTab:AddLabel("Field of View — Widens the camera so you see more around you")
-GuideTab:AddLabel("Widens the camera so you see more around you. The default is 70. This only changes what you see, never what the server knows.")
-GuideTab:AddSection("Teleport")
-GuideTab:AddLabel("Teleport To Player — Drops you just above the selected player")
-GuideTab:AddLabel("Fling Player — Launches the selected player using physics")
-GuideTab:AddLabel("Launches the selected player using physics. You return to where you were.")
-GuideTab:AddLabel("Loop Fling — Keeps flinging the selected player over and over")
-GuideTab:AddLabel("Keeps flinging one player for as long as this is on, waiting for them to land before going again. It skips them while they are already sailing through the air or heading for the void, so it will not follow them down.")
-GuideTab:AddLabel("Fling All Players — Flings everyone in the server one after another, then puts you back")
-GuideTab:AddLabel("Auto Fling Murderer — Flings the murderer on sight, over and over, for as long as this is on")
-GuideTab:AddLabel("Flings the murderer on sight, over and over, for as long as this is on.")
-GuideTab:AddLabel("Auto Fling Sheriff — Flings the sheriff on sight, over and over, for as long as this is on")
-GuideTab:AddLabel("Flings whoever is holding the gun, sheriff or hero, on sight, over and over, for as long as this is on.")
-GuideTab:AddLabel("Auto Collect Coins — Walks you coin to coin at normal speed")
-GuideTab:AddLabel("Walks you coin to coin at normal speed. Idles while you are dead, in the lobby, or when no coins are out, and stops on its own when your bag is full.")
-GuideTab:AddLabel("Teleport To Nearest Coin — One hop to the closest uncollected coin")
-GuideTab:AddSection("Safety")
-GuideTab:AddLabel("Anti Fling — Blocks other exploiters from flinging you")
-GuideTab:AddLabel("Blocks other exploiters from flinging you. It works two ways: it turns off collision on everyone else so they cannot shove you, and it anchors you back if something throws you further than you could physically travel. The collision half keeps running even while you fly. The anchor half stands down while the game teleports you between rounds, while Auto Collect Coins is moving you, and briefly after Mono teleports you itself, since it cannot tell those apart from an attack.")
-GuideTab:AddLabel("Anti Trap — Untested. Keeps your speed when you walk into a murderer trap")
-GuideTab:AddLabel("Untested. Murderer traps turn up rarely enough that this has never been confirmed working, so it may not behave as intended. What it is meant to do: cancel the slow when you walk into a trap, so you keep full speed.")
-GuideTab:AddLabel("Murderer Notify — Warns you when the murderer comes within 50 studs")
-GuideTab:AddLabel("Pops a warning the moment the murderer gets within 50 studs of you, with their name and how far away they were. It fires once per approach and only re-arms after they leave that range again, so it will not spam you while they are nearby.")
-GuideTab:AddLabel("Anti AFK — Stops the 20 minute idle kick")
-GuideTab:AddLabel("Stops the 20 minute idle kick. Roblox tells the game you have gone idle about every two minutes, and Mono answers with a fake input that resets the timer, so you are never kicked. It notifies you the first time it fires so you know it is alive, then stays quiet. While you are holding a weapon it nudges the mouse instead of right clicking, so it can never throw your knife while you are away.")
-GuideTab:AddSection("Utility")
-GuideTab:AddLabel("FPS Cap — Limits your frame rate to save battery and heat")
-GuideTab:AddLabel("Limits your frame rate. Worth having on a phone or a weak laptop, where an uncapped frame rate is what makes the device run hot and drain the battery. Set the slider to 0 for unlimited. The lowest real cap is 5, because anything under that leaves the game unplayable. Turning it off puts you back on whatever cap you had before Mono loaded, not on unlimited.")
-GuideTab:AddLabel("Rejoin — Rejoins this same server")
-GuideTab:AddLabel("Server Hop — Joins the busiest server that still has room")
-GuideTab:AddLabel("Joins the busiest server that still has room for you, never the one you are already in. If that server fills up before you arrive it moves on to the next one.")
-end
-
 --========================== SETTINGS ================================
 -- Autosave writes the whole flag set whenever anything changes.
 local autosave = { on = false, dirty = false }
@@ -3668,7 +3562,7 @@ do
         for k in pairs(CrimsonUI.Themes) do themeNames[#themeNames + 1] = k end
         table.sort(themeNames)
         tab:AddDropdown({
-            Name = "Theme", Options = themeNames, Default = "Mono", Flag = "set_theme",
+            Name = "Theme", Options = themeNames, Default = "Crimson", Flag = "set_theme",
             Callback = function(v) Window:SetTheme(v) end,
         })
     end
@@ -3748,18 +3642,6 @@ do
         Text = "Unload Mono", Confirm = true, ConfirmText = "Click again to unload",
         Callback = function() Mono.requestUnload() end,
     })
-end
-
---========================== CREDITS =================================
-do
-    local tab = Window:AddTab("Credits")
-    tab:AddSection("Mono MM2")
-    tab:AddLabel("A Murder Mystery 2 script by fleece")
-    tab:AddLabel("Made by: fleece")
-    tab:AddLabel("Other scripts: robloxscripts.com/user/Fleece")
-    tab:AddLabel("GitHub: github.com/fleecewtf")
-    tab:AddLabel("Discord: @zquz")
-    tab:AddLabel("UI library: CrimsonUI, from Bathman-lib")
 end
 
 --========================== AUTOSAVE WIRING ========================

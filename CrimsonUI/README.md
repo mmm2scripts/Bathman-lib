@@ -138,16 +138,19 @@ Main:AddToggle({
 [`MonoMM2.lua`](../MonoMM2.lua) at the repository root is a full Murder Mystery 2
 script whose menu runs entirely on CrimsonUI. It is a useful reference if you are
 porting a large script onto this library, because it shows how to work around the
-two things CrimsonUI deliberately does not have:
+one thing CrimsonUI deliberately does not have:
 
 * **Per-element keybinds.** CrimsonUI toggles have no key chip, so the script
   builds a `Keybinds` tab of `AddKeybind` pickers (using `ChangedCallback` only)
   and drives the toggles from one shared `InputBegan` / `InputEnded` handler.
-* **A settings drawer.** There is nowhere to hang long per-feature help text, so
-  the script collects it into a `Guide` tab of `AddLabel` entries.
 
-It also uses the flag system for save/load, wraps `Elements[]._opts.Callback` to
-implement autosave, and maps a six-category menu onto six tabs.
+It runs on the default Crimson theme, uses the flag system for save/load, wraps
+`Elements[]._opts.Callback` to implement autosave, and maps Mono's six categories
+onto six tabs — ten in total, adding Keybinds, Players, Server and Settings.
+
+Note that elements take no description or tooltip field, so there is nowhere to
+hang long help text for a feature. If your script needs it, add your own
+`AddLabel` rows.
 
 ## Project Structure
 
